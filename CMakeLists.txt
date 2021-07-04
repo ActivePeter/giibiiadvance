@@ -8,6 +8,10 @@ cmake_minimum_required(VERSION 3.13)
 project(GiiBiiAdvance)
 enable_language(CXX C)
 
+#conan
+include(${GiiBiiAdvance_BINARY_DIR}/conanbuildinfo.cmake)
+conan_basic_setup()
+
 set(CXX_STANDARD 14)
 set(CXX_EXTENSIONS OFF)
 set(CXX_STANDARD_REQUIRED ON)
@@ -119,12 +123,21 @@ endif()
 # libpng and SLD2 are required
 
 if(CMAKE_C_COMPILER_ID STREQUAL "MSVC")
-    find_package(libpng REQUIRED 1.6)
-    find_package(SDL2 REQUIRED 2.0.7)
+    # find_package(libpng REQUIRED 1.6)
+    # find_package(SDL2 REQUIRED 2.0.7)
 
     target_link_libraries(giibiiadvance PRIVATE
-        png
-        SDL2::SDL2 SDL2::SDL2main
+        # png
+        libpng16
+        zlib
+        # SDL2::SDL2 SDL2::SDL2main
+        sdl2
+	    sdl2main
+        
+        winmm.lib
+        imm32.lib
+	    setupapi.lib
+	    version.lib
     )
 else()
     find_package(PNG REQUIRED 1.6)
